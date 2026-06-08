@@ -8,6 +8,15 @@ pipeline {
             }
         }
 
+        stage('Résolution des dépendances Maven') {
+            steps {
+                sh '''
+                    mvn dependency:resolve -q || true
+                    echo "Cache Maven peuplé."
+                '''
+            }
+        }
+
         stage('Analyse SAST avec Trivy') {
             steps {
                 sh '''
@@ -22,7 +31,6 @@ pipeline {
                     echo "========================================="
                     echo "        FIN DU SCAN TRIVY"
                     echo "========================================="
-                    echo "Rapport généré dans : $(pwd)/rapport_trivy_webgoat.txt"
                     ls -la rapport_trivy_webgoat.txt
                 '''
             }
