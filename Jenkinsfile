@@ -17,13 +17,12 @@ pipeline {
                     trivy fs \
                       --scanners vuln,secret,misconfig \
                       --format table \
-                      . | tee rapport_trivy_webgoat.txt
+                      . | tee rapport_trivy_webgoat.txt || true
                     echo "========================================="
                     echo "        FIN DU SCAN TRIVY"
                     echo "========================================="
-                    mkdir -p "${WORKSPACE}"
-                    cp rapport_trivy_webgoat.txt "${WORKSPACE}/rapport_trivy_webgoat.txt"
-                    echo "Rapport copié dans : ${WORKSPACE}/rapport_trivy_webgoat.txt"
+                    echo "Rapport généré dans : $(pwd)/rapport_trivy_webgoat.txt"
+                    ls -la rapport_trivy_webgoat.txt
                 '''
             }
         }
