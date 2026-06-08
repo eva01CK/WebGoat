@@ -40,14 +40,12 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'rapport_trivy_webgoat.txt',
-                             allowEmptyArchive: true
             emailext(
-                subject: "Rapport Trivy WebGoat - Build #${BUILD_NUMBER} : ${currentBuild.result}",
+                subject: "Rapport Build Jenkins - #${BUILD_NUMBER} : ${currentBuild.result}",
                 body: """
                     Bonjour Awa,
 
-                    Un commit sur WebGoat a automatiquement déclenché le pipeline Jenkins.
+                    Le pipeline Jenkins vient de se terminer.
 
                     Statut     : ${currentBuild.result}
                     Build N°   : ${BUILD_NUMBER}
@@ -56,12 +54,13 @@ pipeline {
                     Commit     : ${GIT_COMMIT}
                     Outil SAST : Trivy
 
-                    Le rapport complet est disponible en pièce jointe.
+                    Le rapport complet du build est disponible en pièce jointe.
 
                     Cordialement,
                     Jenkins
                 """,
-                attachmentsPattern: 'rapport_trivy_webgoat.txt',
+                attachLog: true,
+                compressLog: false,
                 to: 'awaseck@esp.sn'
             )
         }
