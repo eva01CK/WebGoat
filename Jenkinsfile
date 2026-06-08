@@ -57,7 +57,7 @@ pipeline {
                     Commit     : ${GIT_COMMIT}
                     Outil SAST : Trivy
 
-                    Les 450 premières lignes du rapport de build sont disponibles en pièce jointe.
+                    Le rapport complet du build est disponible en pièce jointe.
 
                     Cordialement,
                     Jenkins
