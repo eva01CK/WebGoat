@@ -42,25 +42,7 @@ pipeline {
         always {
             emailext(
                 subject: "Rapport Build Jenkins - #${BUILD_NUMBER} : ${currentBuild.result}",
-                body: """
-                    Bonjour Awa,
-
-                    Le pipeline Jenkins vient de se terminer.
-
-                    Statut     : ${currentBuild.result}
-                    Build N°   : ${BUILD_NUMBER}
-                    Projet     : WebGoat (OWASP)
-                    Branche    : ${GIT_BRANCH}
-                    Commit     : ${GIT_COMMIT}
-                    Outil SAST : Trivy
-
-                    Le rapport complet du build est disponible en pièce jointe.
-
-                    Cordialement,
-                    Jenkins
-                """,
-                attachLog: true,
-                compressLog: false,
+                body: '${BUILD_LOG, maxLines=450}',
                 to: 'awaseck@esp.sn'
             )
         }
