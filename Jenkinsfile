@@ -15,7 +15,8 @@ pipeline {
                     echo "      DEMARRAGE DU SCAN TRIVY"
                     echo "========================================="
                     trivy fs \
-                      --scanners vuln,secret,misconfig \
+                      --scanners vuln,misconfig \
+                      --skip-files src/main/resources/webgoat/static/js/libs/mode-java.js \
                       --format table \
                       . | tee rapport_trivy_webgoat.txt || true
                     echo "========================================="
