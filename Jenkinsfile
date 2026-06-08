@@ -40,9 +40,29 @@ pipeline {
 
     post {
         always {
+            sh 'cat /var/lib/jenkins/jobs/webgoat-sast-auto/builds/${BUILD_NUMBER}/log | head -450 > build_report.txt || true'
+            archiveArtifacts artifacts: 'build_report.txt',
+                             allowEmptyArchive: true
             emailext(
                 subject: "Rapport Build Jenkins - #${BUILD_NUMBER} : ${currentBuild.result}",
-                body: '${BUILD_LOG, maxLines=450}',
+                body: """
+                    Bonjour Awa,
+
+                    Le pipeline Jenkins vient de se terminer.
+
+                    Statut     : ${currentBuild.result}
+                    Build N°   : ${BUILD_NUMBER}
+                    Projet     : WebGoat (OWASP)
+                    Branche    : ${GIT_BRANCH}
+                    Commit     : ${GIT_COMMIT}
+                    Outil SAST : Trivy
+
+                    Les 450 premières lignes du rapport de build sont disponibles en pièce jointe.
+
+                    Cordialement,
+                    Jenkins
+                """,
+                attachmentsPattern: 'build_report.txt',
                 to: 'awaseck@esp.sn'
             )
         }
